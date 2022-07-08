@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class OrderService implements Serializable {
     String url = "D:\\JAVA\\CaseStudy_Module2\\src\\data\\bill.txt";
@@ -37,8 +38,17 @@ public class OrderService implements Serializable {
             String customerName = inputs.nextLine();
 
             System.out.println("Nhập số điện thoại: ");
-            String phone = inputs.nextLine();
-
+//            String phone = inputs.nextLine();
+            String phone;
+            while (true) {
+                phone = inputs.nextLine();
+                Pattern pattern = Pattern.compile("^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$");
+                if (pattern.matcher(phone).matches()) {
+                    break;
+                } else {
+                    System.out.println("Hãy nhập đúng số điện thoại của bạn:");
+                }
+            }
             System.out.println("Nhập địa chỉ: ");
             String address = inputs.nextLine();
 
@@ -160,7 +170,7 @@ public class OrderService implements Serializable {
         String phone = inputs.nextLine();
         while (true) {
             if (!checknumberphone(phone)) {
-                System.out.println("Nhập số điện thoại người dùng muốn sửa: ");
+                System.out.println("Nhập số điện thoại người dùng muốn xóa: ");
                 phone = inputs.nextLine();
             } else {
                 break;
@@ -171,7 +181,7 @@ public class OrderService implements Serializable {
         int codeProduct = Integer.parseInt(inputs.nextLine());
         while (true) {
             if (!checkPhoneAndId(phone,codeProduct)) {
-                System.out.println("Nhập mã đặt hàng muốn sửa: ");
+                System.out.println("Nhập mã đặt hàng muốn xóa: ");
                 codeProduct = Integer.parseInt(inputs.nextLine());
             } else {
                 break;
@@ -197,13 +207,13 @@ public class OrderService implements Serializable {
                         orders.get(i).getPhoneNumber(), orders.get(i).getAddress(), "|");
                 System.out.println(row);
 
-                String orderDetailHeader = String.format("%s%15s%30s%30s%23s",
-                        "STT", "Tên Sản Phẩm", "Giá", "Số Lượng", "|");
+                String orderDetailHeader = String.format("%s%15s%15s%30s%20s%23s",
+                        "STT","Mã sản phẩm", "Tên Sản Phẩm", "Giá", "Số Lượng", "|");
                 System.out.println(orderDetailHeader);
                 int j = 1;
                 for (OrderDetail od : orders.get(i).getOrderDetails()) {
-                    String orderDetailRow = String.format("%d%15s%30s%30s%25s",
-                            j, od.getNameProduct(), od.getPrice(), od.getQuantity(), "|");
+                    String orderDetailRow = String.format("%d%15s%30s%30s%15s%20s",
+                            j,od.getProductId(), od.getNameProduct(), od.getPrice(), od.getQuantity(), "|");
                     System.out.println(orderDetailRow);
                     j++;
                 }
@@ -230,14 +240,14 @@ public class OrderService implements Serializable {
                     order.getPhoneNumber(), order.getAddress(), "|");
             System.out.println(row);
 
-            String orderDetailHeader = String.format("%s%15s%30s%30s%23s",
-                    "STT", "Tên Sản Phẩm", "Giá", "Số Lượng", "|");
+            String orderDetailHeader = String.format("%s%15s%30s%20s%23s",
+                    "STT","Mã sản phẩm", "Tên Sản Phẩm", "Giá", "Số Lượng", "|");
             System.out.println(orderDetailHeader);
 
             int i = 1;
             for (OrderDetail od : order.getOrderDetails()) {
-                String orderDetailRow = String.format("%d%15s%30s%30s%25s",
-                        i, od.getNameProduct(), od.getPrice(), od.getQuantity(), "|");
+                String orderDetailRow = String.format("%d%15s%30s%30s%15s%20s",
+                        i,od.getProductId(), od.getNameProduct(), od.getPrice(), od.getQuantity(), "|");
                 System.out.println(orderDetailRow);
                 i++;
             }

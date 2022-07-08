@@ -1,6 +1,5 @@
 package product;
 
-import product.Product;
 
 import java.io.*;
 import java.util.ArrayList;
